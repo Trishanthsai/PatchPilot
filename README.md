@@ -74,6 +74,25 @@ Open `http://localhost:5173` in your browser.
 4. Go to **Verify** to generate and download an **Evidence Pack**
 
 ---
+## Configuration
+
+The backend supports the following environment variables:
+
+| Variable           | Default               | Description                           |
+| ------------------ | --------------------- | ------------------------------------- |
+| MAX_UPLOAD_MB      | 100                   | Maximum allowed ZIP upload size in MB |
+| PATCHPILOT_WORKDIR | System temp directory | Working directory used for scan jobs  |
+
+If an uploaded ZIP exceeds `MAX_UPLOAD_MB`, the API returns:
+
+```json
+{
+  "detail": "File too large. Maximum upload size is {MAX_UPLOAD_MB}MB."
+}
+```
+
+with HTTP status `413 Request Entity Too Large`.
+
 
 ## API reference
 
