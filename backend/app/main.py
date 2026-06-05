@@ -286,7 +286,7 @@ async def scan_url(
 
     semgrep, osv, gitleaks, findings = _scan_repo_dir(scan_root)
 
-# NEW: Save to Database so the Trend Chart works!
+    # NEW: Save to Database so the Trend Chart works!
     try:
         db = await get_db()
         try:
@@ -526,6 +526,7 @@ def delete_job(job_id: str):
     if job_dir.exists():
         safe_rmtree(job_dir)
     return {"deleted": True}
+
 
 @app.get("/trends")
 async def get_trends_endpoint(limit: int = 6):
