@@ -45,11 +45,13 @@ async def init_db():
 async def get_db():
     return await aiosqlite.connect(DB_PATH)
 
+
 async def get_trend_data(limit: int = 6):
     """Fetches the finding counts for the last N scans for the dashboard."""
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
-        cursor = await db.execute("""
+        cursor = await db.execute(
+            """
             SELECT 
                 j.created_at, 
                 COUNT(f.id) as findings_count
@@ -58,17 +60,18 @@ async def get_trend_data(limit: int = 6):
             GROUP BY j.job_id
             ORDER BY j.created_at DESC
             LIMIT ?
-        """, (limit,))
-        
+        """,
+            (limit,),
+        )
+
         rows = await cursor.fetchall()
         rows = list(reversed(rows))
-        
+
         formatted_data = []
         for row in rows:
             dt_obj = datetime.datetime.strptime(row["created_at"], "%Y-%m-%d %H:%M:%S")
-            formatted_data.append({
-                "date": dt_obj.strftime("%b %d"),
-                "findings": row["findings_count"]
-            })
-            
+            formatted_data.append(
+                {"date": dt_obj.strftime("%b %d"), "findings": row["findings_count"]}
+            )
+
         return formatted_data
