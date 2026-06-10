@@ -44,8 +44,12 @@ export type BackendFinding = {
     [key: string]: unknown;
   };
 
-  reachability?: unknown;
-  features?: unknown;
+  reachability?: {
+  reachable?: boolean;
+  reason?: string;
+};
+
+features?: Record<string, unknown>;
   confidence?: number;
   code?: string;
   suggested_fix?: string;
